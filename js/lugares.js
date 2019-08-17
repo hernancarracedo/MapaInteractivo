@@ -8,20 +8,53 @@ lugaresModulo = (function () {
         página (las direcciones ingresables por el usuario).
         Para esto creá un círculo con radio de 20000 metros y usalo para fijar
         los límites de la búsqueda de dirección. El círculo no se debe ver en el mapa. */
+
+        var input = document.getElementById('direccion');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        var circulo = new google.maps.Circle(
+          {center: posicionCentral, radius: 20000} ///// POSICION CENTRAL NO VA
+        );  
+        autocomplete.setBounds(circulo.getBounds());
+
+        autocomplete.setFields(
+          ['address_components', 'geometry', 'icon', 'name']
+        );
+
   }
 
     // Inicializo la variable servicioLugares y llamo a la función autocompletar
   function inicializar () {
-    servicioLugares = new google.maps.places.PlacesService(mapa)
+    servicioLugares = new google.maps.places.PlacesService(mapa);
     autocompletar()
   }
 
     // Busca lugares con el tipo especificado en el campo de TipoDeLugar
 
   function buscarCerca (posicion) {
-        /* Completar la función buscarCerca  que realice la búsqueda de los lugares
+    /* Completar la función buscarCerca que realice la búsqueda de los lugares
     del tipo (tipodeLugar) y con el radio indicados en el HTML cerca del lugar
     pasado como parámetro y llame a la función marcarLugares. */
+ 
+    //servicio = new google.maps.places.PlacesService(mapa);
+    var req = {
+      location: posicion,
+      radius: 20000,
+      types: tipoDeLugar
+    };
+
+    
+
+    console.log("rango: "+ req.radius);
+    console.log("tipo de lugar: "+ req.types);
+    //console.log("tipo de lugar: "+ tipoDeLugar[0]);
+
+    servicioLugares.nearbySearch(req, function(resultado, status) {
+      if (status != google.maps.places.PlacesServiceStatus.OK) {
+        return;
+      } else {
+        marcadorModulo.marcarLugares(resultado, status);
+      }
+    }); 
 
   }
   return {
