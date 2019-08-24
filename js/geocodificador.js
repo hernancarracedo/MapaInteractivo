@@ -10,7 +10,7 @@ geocodificadorModulo = (function () {
      coordenada: la ubicación de tipo google.maps.LatLng */
     geocodificador.geocode({'address': direccion}, function(resultados, status){
         if (status == google.maps.GeocoderStatus.OK) {
-          var miResultado = resultados[0].geometry.location; 
+          var miResultado = resultados[0].geometry.location;
           funcionALlamar(direccion, miResultado);
         } 
     });

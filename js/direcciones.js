@@ -42,11 +42,12 @@ direccionesModulo = (function () {
 
     // Agrega la dirección en las listas de puntos intermedios y lo muestra con el street view
   function agregarDireccionYMostrarEnMapa (direccion, ubicacion) {
-    that = this
-    var ubicacionTexto = ubicacion.lat() + ',' + ubicacion.lng()
-    agregarDireccionEnLista(direccion, ubicacionTexto)
-    mapa.setCenter(ubicacion)
-    streetViewModulo.fijarStreetView(ubicacion)
+    that = this;
+    var ubicacionTexto = ubicacion.lat() + ',' + ubicacion.lng();
+    agregarDireccionEnLista(direccion, ubicacionTexto);
+    mapa.setCenter(ubicacion);
+    console.log('ubicacion: ' + ubicacion);
+    streetViewModulo.fijarStreetView(ubicacion);
     marcadorModulo.mostrarMiMarcador(ubicacion)
   }
 
@@ -85,7 +86,7 @@ direccionesModulo = (function () {
       draggable: true,
       map: mapa,
       panel: document.getElementById('directions-panel-summary'),
-      suppressMarkers: true
+      suppressMarkers: false
     })
   }
 
@@ -93,9 +94,54 @@ direccionesModulo = (function () {
     // dependiendo de la formaDeIr que puede ser Caminando, Auto o Bus/Subterraneo/Tren
   function calcularYMostrarRutas () {
 
-        /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
-         usuario quiere ir de un camino al otro, calcula la ruta entre esas dos posiciones
-         y luego muestra la ruta. */
+    /* Completar la función calcularYMostrarRutas , que dependiendo de la forma en que el
+    usuario quiere ir de un camino al otro, calcula la ruta entre esas dos posiciones
+    y luego muestra la ruta. */
+    var seleccionFormaIr = document.getElementById('comoIr').value;
+    var comoIr;
+
+    // la seleccion de mi index.html me da valores en castellano que no son strings validos para
+    // tipos de transporte de la API.  Convierto segun corresponda en este Switch
+    switch (seleccionFormaIr) {
+      case 'Auto':
+        comoIr = 'DRIVING';
+        break;
+      case 'Caminando':
+        comoIr = 'WALKING';
+        break;
+      case 'Bus/Subterraneo/Tren':
+        comoIr = 'TRANSIt';
+        break;
+    }
+
+    var puntosIntermediosSeleccionados = document.getElementById('puntosIntermedios');
+    var arryaPuntosIntermedios = [];
+
+    for (var i = 0; i < puntosIntermediosSeleccionados.length; i++) {
+      if (puntosIntermediosSeleccionados.options[i].selected) {
+        arryaPuntosIntermedios.push({
+          location: puntosIntermediosSeleccionados[i].value,
+          stopover: false
+        });
+      }
+    }
+
+    servicioDirecciones.route(
+      {
+        origin: {query: document.getElementById('desde').value},
+        destination: {query: document.getElementById('hasta').value},
+        waypoints: arryaPuntosIntermedios,
+        travelMode: comoIr
+      },
+
+      function(response, estado) {
+        if (estado === 'OK') {
+          mostradorDirecciones.setDirections(response);
+        } else {
+          window.alert('la consulta fallo: ' + estado);
+        }
+    });
+
   }
 
   return {

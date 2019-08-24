@@ -7,18 +7,16 @@ marcadorModulo = (function () {
 
     // Crea un marcador y lo muestra en el mapa
   function mostrarMiMarcador (ubicacion) {
-        /* Completar la función mostrarMiMarcador() para crear un marcador
-        en la posición pasada por parámetro y mostrarlo en el mapa.
-        Este marcador debe tener un título, una animación.
-        El marcador que vas a crear debe asignarse a la variable miMarcador */
-          miMarcador = new google.maps.Marker({
-          position: ubicacion,
-          map: mapa,
-          title: 'mi marcador',
-          animation: google.maps.Animation.DROP
-
-        }); 
-
+    /* Completar la función mostrarMiMarcador() para crear un marcador
+    en la posición pasada por parámetro y mostrarlo en el mapa.
+    Este marcador debe tener un título, una animación.
+    El marcador que vas a crear debe asignarse a la variable miMarcador */
+    miMarcador = new google.maps.Marker({
+      position: ubicacion,
+      map: mapa,
+      title: 'mi marcador',
+      animation: google.maps.Animation.DROP
+    }); 
   }
 
     // Agrega la dirección del marcador en la lista de Lugares Intermedios
@@ -114,8 +112,8 @@ marcadorModulo = (function () {
       }
     })
 
-        // Cuando haces clic sobre el marcador, muestra la foto,
-        // el nombre y la valuación del lugar si es que lo tienen.
+    // Cuando haces clic sobre el marcador, muestra la foto,
+    // el nombre y la valuación del lugar si es que lo tienen.
     var lugarLoc = lugar.geometry.location
     google.maps.event.addListener(marcador, 'click', function () {
       streetViewModulo.fijarStreetView(lugarLoc)
