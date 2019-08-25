@@ -46,7 +46,6 @@ direccionesModulo = (function () {
     var ubicacionTexto = ubicacion.lat() + ',' + ubicacion.lng();
     agregarDireccionEnLista(direccion, ubicacionTexto);
     mapa.setCenter(ubicacion);
-    console.log('ubicacion: ' + ubicacion);
     streetViewModulo.fijarStreetView(ubicacion);
     marcadorModulo.mostrarMiMarcador(ubicacion)
   }
@@ -110,7 +109,7 @@ direccionesModulo = (function () {
         comoIr = 'WALKING';
         break;
       case 'Bus/Subterraneo/Tren':
-        comoIr = 'TRANSIt';
+        comoIr = 'TRANSIT';
         break;
     }
 
